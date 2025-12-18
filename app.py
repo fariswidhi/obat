@@ -32,6 +32,19 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+# Function to get API Key safely
+def get_api_key():
+    # 1. Cek Streamlit Secrets (Production)
+    if "OPENAI_API_KEY" in st.secrets:
+        return st.secrets["OPENAI_API_KEY"]
+    
+    # 2. Cek Environment Variable (.env Local)
+    env_key = os.getenv("OPENAI_API_KEY")
+    if env_key and env_key != "ganti_dengan_api_key_anda_disini":
+        return env_key
+    
+    return None
+
 # Title and Description
 st.title("💊 AI Resep Obat Parser")
 st.markdown("Aplikasi ini menggunakan OpenAI untuk mengekstrak informasi terstruktur dari teks resep obat.")
@@ -41,20 +54,17 @@ with st.sidebar:
     st.header("Konfigurasi")
     
     # API Key Handling
-    api_key = os.getenv("OPENAI_API_KEY")
+    api_key = get_api_key()
+    
     if api_key:
         api_key = api_key.strip()
-    
-    if not api_key or api_key == "ganti_dengan_api_key_anda_disini":
+        st.success("✅ API Key terdeteksi (System/Secrets)")
+    else:
         api_key = st.text_input("Masukkan OpenAI API Key Anda:", type="password")
         if not api_key:
             st.warning("⚠️ Harap masukkan API Key untuk melanjutkan.")
         else:
             api_key = api_key.strip()
-    else:
-        st.success("✅ API Key terdeteksi dari .env")
-        # Debugging (optional, remove in production)
-        # st.caption(f"Key berakhir dengan: ...{api_key[-4:]}")
 
     st.markdown("---")
     st.markdown("### Tentang")
@@ -102,7 +112,7 @@ with col2:
                         model="gpt-4.1",
                         prompt={
                             "id": "pmpt_69437afedb6c8190b6c6560913584516022ee7c443650bd6",
-                            "version": "1"
+                            "version": "2"
                         },
                         input=resep_input
                     )
