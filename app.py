@@ -112,7 +112,7 @@ with col2:
                         model="gpt-4.1",
                         prompt={
                             "id": "pmpt_69437afedb6c8190b6c6560913584516022ee7c443650bd6",
-                            "version": "2"
+                            "version": "3"
                         },
                         input=resep_input
                     )
