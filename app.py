@@ -42,12 +42,19 @@ with st.sidebar:
     
     # API Key Handling
     api_key = os.getenv("OPENAI_API_KEY")
+    if api_key:
+        api_key = api_key.strip()
+    
     if not api_key or api_key == "ganti_dengan_api_key_anda_disini":
         api_key = st.text_input("Masukkan OpenAI API Key Anda:", type="password")
         if not api_key:
             st.warning("⚠️ Harap masukkan API Key untuk melanjutkan.")
+        else:
+            api_key = api_key.strip()
     else:
         st.success("✅ API Key terdeteksi dari .env")
+        # Debugging (optional, remove in production)
+        # st.caption(f"Key berakhir dengan: ...{api_key[-4:]}")
 
     st.markdown("---")
     st.markdown("### Tentang")
